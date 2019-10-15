@@ -157,7 +157,7 @@
                                         <div class="col-md-12">
                                             <div class="p-7">
                                                 <h4>${data["title"]}</h4>
-                                                <p>${data["body"].substring(0, 100) + "..."}</p>
+                                                <p>${data["body"].length > 100 ? data["body"].substring(0, 100) + "..." : data["body"]}</p>
                                                 <button type="button" onclick="editEntry()" class="btn btn-label btn-primary">
                                                     <label><i class="fa fa-pencil"></i></label> Edit
                                                 </button>
@@ -180,7 +180,7 @@
                                         <div class="col-md-8">
                                             <div class="p-7">
                                                 <h4>${data["title"]}</h4>
-                                                <p>${data["body"].substring(0, 100) + "..."}</p>
+                                                <p>${data["body"].length > 100 ? data["body"].substring(0, 100) + "..." : data["body"]}</p>
                                                 <button type="button" onclick="editEntry()" class="btn btn-label btn-primary">
                                                     <label><i class="fa fa-pencil"></i></label> Edit
                                                 </button>

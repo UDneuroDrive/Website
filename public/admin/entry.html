@@ -114,7 +114,7 @@
                                     <textarea id="body" class="form-control" placeholder="Body" rows="4"></textarea>
                                 </div>
 
-                                <button class="btn btn-primary btn-block" type="submit">Post your entry</button>
+                                <button class="btn btn-primary btn-block" id="submit" type="submit">Post your entry</button>
                             </form>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
         }
 
         function addEntry(e) {
-
+            document.getElementById('submit').disabled = true;
             var user = firebase.auth().currentUser;
             if (user) {
                 var uid = user.uid;
@@ -204,6 +204,7 @@
 
                 if(title == "" || body == "") {
                     alert("There must be a title and a body for your entry.")
+                    document.getElementById('submit').disabled = false;
                     return false;
                 }
 
@@ -214,6 +215,7 @@
                     // Observe state change events such as progress, pause, and resume
                     }, (error) => {
                         // Handle unsuccessful uploads
+                        document.getElementById('submit').disabled = false;
                         alert("Error adding files: ", error);
                     }, () => {
                         // Do something once upload is complete
@@ -259,6 +261,7 @@
                         console.log("Document written with ID: ", docRef.id);
                     })
                     .catch(function(error) {
+                        document.getElementById('submit').disabled = false;
                         alert("Error adding document: ", error);
                     });
                 }
