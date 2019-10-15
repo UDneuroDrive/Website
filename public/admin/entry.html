@@ -9,7 +9,7 @@
     <meta name="keywords"
         content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
 
-    <title>Manage | neuroDrive Senior Design Team</title>
+    <title>Entry | neuroDrive Senior Design Team</title>
 
     <!-- Styles -->
     <link href="../assets/css/page.min.css" rel="stylesheet">
@@ -20,11 +20,9 @@
     <link rel="icon" href="../assets/img/favicon.png">
 
     <!--  Open Graph Tags -->
-    <meta property="og:title" content="Manage | neuroDrive Senior Design Team">
+    <meta property="og:title" content="Entry | neuroDrive Senior Design Team">
     <meta property="og:description"
         content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
-
-    <link rel="stylesheet" href="../assets/css/dropzone.css">
 
     <style>
         .background-tint {
@@ -76,7 +74,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h1 id="name" class="fw-200 mb-6 text-white">Add Entry</h1>
+                    <h1 class="fw-200 mb-6 text-white">Add Entry</h1>
                 </div>
             </div>
         </div>
@@ -90,24 +88,30 @@
                 <div class="row">
                     <div id="content" class="col-md-10 col-xl-9 mx-auto">
                         <div id="dropzone">
-                            <form style="margin-top: 40px; margin-bottom: 20px;" action="/upload" class="dropzone needsclick dz-clickable" id="demo-upload">
+                            <!-- <form style="margin-top: 40px; margin-bottom: 20px;" action="/upload" class="dropzone needsclick dz-clickable" id="demo-upload">
 
                                 <div class="dz-message needsclick">
                                     Drop Image or Video here or click to upload.<br>
                                 </div>
 
-                            </form>
+                            </form> -->
 
-                            <form style="padding-bottom: 60px" action="#" method="POST">
+                            <form style="padding-bottom: 60px" onsubmit="return addEntry(event)">
+
+                                <div style="margin-top: 40px; margin-bottom: 20px;" class="row">
+                                    <div class="form-group col-12 col-md-12">
+                                            <input type="file" class="file-select" onchange="handleFileUploadChange(event)" accept="image/*"/>
+                                    </div>
+                                </div>
 
                                 <div class="row">
                                     <div class="form-group col-12 col-md-12">
-                                        <input class="form-control" type="text" placeholder="Title">
+                                        <input id="title" class="form-control" type="text" placeholder="Title">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="Body" rows="4"></textarea>
+                                    <textarea id="body" class="form-control" placeholder="Body" rows="4"></textarea>
                                 </div>
 
                                 <button class="btn btn-primary btn-block" type="submit">Post your entry</button>
@@ -120,6 +124,19 @@
 
     </main>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+
+            <p class="small">Copyright © <span id="year"></span> neuroDrive, All rights reserved.</p>
+
+        </div>
+    </footer><!-- /.footer -->
+    <script>
+        var dt = new Date();
+        document.getElementById("year").innerHTML = dt.getYear() + 1900;
+    </script>
+
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
@@ -130,8 +147,6 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
-
-    <script src="../assets/js/dropzone.js"></script>
 
     <script>
         // Your web app's Firebase configuration
@@ -149,21 +164,109 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
-        var storage = firebase.storage();
+        const storage = firebase.storage();
+        const storageRef = storage.ref();
+
         var db = firebase.firestore();
 
         var allUsers = {"vUvrs5pHvvTpB5JHligXJ4nO1uT2": "anthonysette", "tRcERq8PxSTEdwzOhV1cq1mNHao1": "justusmatteson", "XA778erOC5Tz8zTGuVKL3eP4NSt1": "kunalvohra", "clIwi6AJZSOQsx4yFbuJJtQEEc12": "walterhoffman"}
+        var user;
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 var uid = user.uid;
-                // do sth that requires uid
 
             } else {
                 // user is not logged in
                 window.location.replace("/admin.html");
             }
         });
+
+        let selectedFile;
+        function handleFileUploadChange(e) {
+            selectedFile = e.target.files[0];
+            console.log("change")
+        }
+
+        function getRandomString(){
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        }
+
+        function addEntry(e) {
+
+            var user = firebase.auth().currentUser;
+            if (user) {
+                var uid = user.uid;
+                var username = allUsers[uid]
+
+                var title = document.getElementById("title").value;
+                var body = document.getElementById("body").value;
+
+                if(title == "" || body == "") {
+                    alert("There must be a title and a body for your entry.")
+                    return false;
+                }
+
+                // User is signed in.
+                if(selectedFile != null){
+                    const uploadTask = storageRef.child(`images/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
+                    uploadTask.on('state_changed', (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    }, (error) => {
+                        // Handle unsuccessful uploads
+                        alert("Error adding files: ", error);
+                    }, () => {
+                        // Do something once upload is complete
+
+                        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                            console.log('File available at', downloadURL);
+
+                            // The file was successfully updated so we can now post data
+                            // Add a new document with a generated id.
+                            db.collection("posts").add({
+                                title: title,
+                                body: body,
+                                image: downloadURL,
+                                video: null,
+                                user: username,
+                                date: firebase.firestore.FieldValue.serverTimestamp()
+                                
+                            })
+                            .then(function(docRef) {
+                                window.location.replace("manage.html");
+                                console.log("Document written with ID: ", docRef.id);
+                            })
+                            .catch(function(error) {
+                                alert("Error adding document: ", error);
+                            });
+
+                        });
+                        console.log('success');
+                    });
+                } else { //add document without file
+                    // Add a new document with a generated id.
+                    db.collection("posts").add({
+                        title: title,
+                        body: body,
+                        image: null,
+                        video: null,
+                        user: username,
+                        date: firebase.firestore.FieldValue.serverTimestamp()
+                        
+                    })
+                    .then(function(docRef) {
+                        window.location.replace("manage.html");
+                        console.log("Document written with ID: ", docRef.id);
+                    })
+                    .catch(function(error) {
+                        alert("Error adding document: ", error);
+                    });
+                }
+            } else {
+                window.location.replace("/admin.html");
+            }
+            return false;
+        }
 
         function logout() {
             firebase.auth().signOut().then(function() {

@@ -31,7 +31,7 @@
 
         <div class="navbar-left">
           <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="/">
             <span class="text-white">neuro<strong>Drive</strong></span>
 
           </a>
@@ -40,12 +40,10 @@
         <section class="navbar-mobile">
           <nav class="nav nav-navbar ml-auto">
 
-            <a class="nav-link active" href="#">Home</a>
-
-            <a class="nav-link" href="#">Project</a>
+            <a class="nav-link active" href="/">Home</a>
 
             <li class="nav-item">
-              <a class="nav-link" href="#">Wikis <span class="arrow"></span></a>
+              <a class="nav-link">Wikis <span class="arrow"></span></a>
               <ul class="nav">
                 <li class="nav-item">
                   <a class="nav-link" href="wiki.html?user=anthonysette">Anthony Sette</a>
@@ -128,35 +126,16 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container">
-        <div class="row gap-y align-items-center">
-
-          <div class="col-6 col-lg-3">
-            <a href="index.html"><img src="assets/img/logo-dark.png" alt="logo"></a>
-          </div>
-
-          <div class="col-6 col-lg-3 text-right order-lg-last">
-            <div class="social">
-              <a class="social-facebook" href="https://www.facebook.com/thethemeio"><i class="fa fa-facebook"></i></a>
-              <a class="social-twitter" href="https://twitter.com/thethemeio"><i class="fa fa-twitter"></i></a>
-              <a class="social-instagram" href="https://www.instagram.com/thethemeio/"><i class="fa fa-instagram"></i></a>
-              <a class="social-dribbble" href="https://dribbble.com/thethemeio"><i class="fa fa-dribbble"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="nav nav-bold nav-uppercase nav-trim justify-content-lg-center">
-              <a class="nav-link" href="#">About</a>
-              <a class="nav-link" href="#">Blog</a>
-              <a class="nav-link" href="#">Policy</a>
-              <a class="nav-link" href="#">Contact</a>
-            </div>
-          </div>
-
+        <div class="container text-center">
+    
+            <p class="small">Copyright © <span id="year"></span> neuroDrive, All rights reserved.</p>
+    
         </div>
-      </div>
     </footer><!-- /.footer -->
-
+    <script>
+        var dt = new Date();
+        document.getElementById("year").innerHTML = dt.getYear() + 1900;
+    </script>
 
     <!-- Scripts -->
     <script src="assets/js/page.min.js"></script>

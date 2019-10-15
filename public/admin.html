@@ -28,7 +28,7 @@
 
         <div class="navbar-left">
           <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="/">
             <span class="text-white">neuro<strong>Drive</strong></span>
 
           </a>
@@ -111,6 +111,19 @@
 
     </main><!-- /.main-content -->
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+    
+            <p class="small">Copyright © <span id="year"></span> neuroDrive, All rights reserved.</p>
+    
+        </div>
+    </footer><!-- /.footer -->
+    <script>
+        var dt = new Date();
+        document.getElementById("year").innerHTML = dt.getYear() + 1900;
+    </script>
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
@@ -148,16 +161,12 @@
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
 
-        console.log(email, password)
-
         firebase.auth().signInWithEmailAndPassword(email, password).then( function() {
           window.location.replace("admin/manage.html");
         }).catch(function(error) {
-          // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
-
-          console.log(errorMessage)
+          alert(errorMessage)
         });
 
         return false;
