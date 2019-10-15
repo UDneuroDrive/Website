@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+    <meta name="keywords" content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
 
-    <title>TheSaaS — Login</title>
+    <title>Wikis | neuroDrive Senior Design Team</title>
 
     <!-- Styles -->
     <link href="assets/css/page.min.css" rel="stylesheet">
@@ -15,54 +15,157 @@
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
     <link rel="icon" href="assets/img/favicon.png">
+
+    <!--  Open Graph Tags -->
+    <meta property="og:title" content="Wikis | neuroDrive Senior Design Team">
+    <meta property="og:description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
   </head>
 
-  <body class="layout-centered bg-img" style="background-image: url(assets/img/bg/4.jpg);">
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+
+        <div class="navbar-left">
+          <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
+          <a class="navbar-brand" href="index.html">
+            <span class="text-white">neuro<strong>Drive</strong></span>
+
+          </a>
+        </div>
+
+        <section class="navbar-mobile">
+          <nav class="nav nav-navbar ml-auto">
+
+            <a class="nav-link" href="index.html">Home</a>
+
+            <a class="nav-link" href="project.html">Project</a>
+
+            <li class="nav-item">
+              <a class="nav-link" href="!#">Wikis <span class="arrow"></span></a>
+              <ul class="nav">
+                <li class="nav-item">
+                  <a id="anthonysette" class="nav-link" href="wiki.html?user=anthonysette">Anthony Sette</a>
+                </li>
+                <li class="nav-item">
+                  <a id="justusmatteson" class="nav-link" href="wiki.html?user=justusmatteson">Justus Matteson</a>
+                </li>
+                <li class="nav-item">
+                  <a id="kunalvohra" class="nav-link" href="wiki.html?user=kunalvohra">Kunal Vohra</a>
+                </li>
+                <li class="nav-item">
+                    <a id="walterhoffman" class="nav-link" href="wiki.html?user=walterhoffman">Walter Hoffman</a>
+                  </li>
+              </ul>
+            </li>
+          </nav>
+
+          <span class="navbar-divider"></span>
+
+          <div>
+            <a class="btn btn-sm btn-round btn-primary ml-lg-4 mr-2" href="#">Log in</a>
+          </div>
+        </section>
+
+      </div>
+    </nav><!-- /.navbar -->
+
+    <body class="layout-centered" style="background-color: grey">
+
 
 
     <!-- Main Content -->
     <main class="main-content">
 
       <div class="bg-white rounded shadow-7 w-400 mw-100 p-6">
-        <h5 class="mb-7">Sign into your account</h5>
+        <h5 class="mb-7">Log into your account</h5>
 
-        <form>
+        <form onsubmit="return login()">
           <div class="form-group">
-            <input type="text" class="form-control" name="username" placeholder="Username">
+            <input id="email" type="email" class="form-control" name="email" placeholder="Email">
           </div>
 
           <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password">
+            <input id="password" type="password" class="form-control" name="password" placeholder="Password">
           </div>
 
-          <div class="form-group flexbox py-3">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" checked>
-              <label class="custom-control-label">Remember me</label>
-            </div>
+          <!-- <div class="form-group flexbox py-3">
 
             <a class="text-muted small-2" href="user-recover.html">Forgot password?</a>
-          </div>
+          </div> -->
 
           <div class="form-group">
             <button class="btn btn-block btn-primary" type="submit">Login</button>
           </div>
         </form>
 
-        <div class="divider">Or Login With</div>
+        <!-- <div class="divider">Or Login With</div>
         <div class="text-center">
           <a class="btn btn-circle btn-sm btn-facebook mr-2" href="#"><i class="fa fa-facebook"></i></a>
           <a class="btn btn-circle btn-sm btn-google mr-2" href="#"><i class="fa fa-google"></i></a>
           <a class="btn btn-circle btn-sm btn-twitter" href="#"><i class="fa fa-twitter"></i></a>
-        </div>
+        </div> -->
 
-        <hr class="w-30">
-
-        <p class="text-center text-muted small-2">Don't have an account? <a href="user-register.html">Register here</a></p>
+        <!-- <hr class="w-30"> -->
       </div>
 
     </main><!-- /.main-content -->
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+          apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
+          authDomain: "neurodrive-senior.firebaseapp.com",
+          databaseURL: "https://neurodrive-senior.firebaseio.com",
+          projectId: "neurodrive-senior",
+          storageBucket: "neurodrive-senior.appspot.com",
+          messagingSenderId: "627396498743",
+          appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
+          measurementId: "G-Q4PMGNR560"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+      // check if user is logged in
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          window.location.replace("admin/manage.html");
+        }
+      });
+
+      // log user in
+      function login() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        console.log(email, password)
+
+        firebase.auth().signInWithEmailAndPassword(email, password).then( function() {
+          window.location.replace("admin/manage.html");
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          console.log(errorMessage)
+        });
+
+        return false;
+      }
+
+
+
+    </script>
 
     <!-- Scripts -->
     <script src="assets/js/page.min.js"></script>

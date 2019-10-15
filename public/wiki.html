@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+    <meta name="keywords" content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
+
+    <title>Wikis | neuroDrive Senior Design Team</title>
+
+    <!-- Styles -->
+    <link href="assets/css/page.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="icon" href="assets/img/favicon.png">
+
+    <!--  Open Graph Tags -->
+    <meta property="og:title" content="Wikis | neuroDrive Senior Design Team">
+    <meta property="og:description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+
+    <style>
+        .background-tint {
+            background-color: rgba(0,0,0,.5);
+            background-blend-mode: multiply;
+        }
+        .header {
+            margin-bottom: 20px !important;
+        }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+
+        <div class="navbar-left">
+          <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
+          <a class="navbar-brand" href="#">
+            <span class="text-white">neuro<strong>Drive</strong></span>
+
+          </a>
+        </div>
+
+        <section class="navbar-mobile">
+          <nav class="nav nav-navbar ml-auto">
+
+            <a class="nav-link" href="#">Home</a>
+
+            <a class="nav-link" href="#">Project</a>
+
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Wikis <span class="arrow"></span></a>
+              <ul class="nav">
+                <li class="nav-item">
+                  <a id="anthonysette" class="nav-link" href="wiki.html?user=anthonysette">Anthony Sette</a>
+                </li>
+                <li class="nav-item">
+                  <a id="justusmatteson" class="nav-link" href="wiki.html?user=justusmatteson">Justus Matteson</a>
+                </li>
+                <li class="nav-item">
+                  <a id="kunalvohra" class="nav-link" href="wiki.html?user=kunalvohra">Kunal Vohra</a>
+                </li>
+                <li class="nav-item">
+                    <a id="walterhoffman" class="nav-link" href="wiki.html?user=walterhoffman">Walter Hoffman</a>
+                  </li>
+              </ul>
+            </li>
+          </nav>
+
+          <span class="navbar-divider"></span>
+
+          <div>
+            <a class="btn btn-sm btn-round btn-primary ml-lg-4 mr-2" href="admin.html">Log in</a>
+          </div>
+        </section>
+
+      </div>
+    </nav><!-- /.navbar -->
+
+    <!-- Header -->
+    <header class="header pb-9 pt-10 mb-9 background-tint" style="background-image: url(assets/img/raspberrypi4.jpg)">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h1 id="name" class="fw-200 mb-6 text-white"></h1>
+              <p id="description" class="lead-2 text-white"></p>
+            </div>
+          </div>
+        </div>
+    </header><!-- /.header -->
+
+    <div id="content">
+        <!-- content will be added when it is loaded -->
+    </div>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
+        authDomain: "neurodrive-senior.firebaseapp.com",
+        databaseURL: "https://neurodrive-senior.firebaseio.com",
+        projectId: "neurodrive-senior",
+        storageBucket: "neurodrive-senior.appspot.com",
+        messagingSenderId: "627396498743",
+        appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
+        measurementId: "G-Q4PMGNR560"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    var db = firebase.firestore();
+    var user = null;
+    var allUsers = ["anthonysette","justusmatteson","kunalvohra","walterhoffman"]
+
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("user")){
+        user = urlParams.get('user')
+        if(!allUsers.includes(user)){
+            window.location.replace("404.html");
+        }
+        // reassign active class
+        document.getElementsByClassName("nav-link").className = "nav-link";
+        document.getElementById(user).className = "nav-link active";
+
+        // populate user data
+        var userData = db.collection("users").doc(user).get().then(function(doc) {
+            document.getElementById("name").innerText = doc.data()["name"]
+            document.getElementById("description").innerText = doc.data()["description"]
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+
+    } else {
+        window.location.replace("404.html");
+    }
+
+    db.collection("posts").where("user", "==", user).orderBy('date', 'desc').get().then((querySnapshot) => { // 
+        querySnapshot.forEach((doc) => {
+            var data = doc.data()
+
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <section class="section overflow-hidden">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-md-6 align-self-center text-center text-md-left">
+                                <h2>${data["title"]}</h2><br>
+                                <p>${data["body"]}</p>
+                            </div>
+
+                            <div class="col-md-6 mx-auto text-center mt-8 mt-md-0">
+                                <img src="${data["image"]}" alt="Update Image">
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            `;
+            document.getElementById('content').appendChild(div);
+        });
+    });
+
+        
+    </script>
+
+    </body>
+</html>

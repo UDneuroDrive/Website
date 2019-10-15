@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+    <meta name="keywords"
+        content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
+
+    <title>Manage | neuroDrive Senior Design Team</title>
+
+    <!-- Styles -->
+    <link href="../assets/css/page.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+    <link rel="icon" href="../assets/img/favicon.png">
+
+    <!--  Open Graph Tags -->
+    <meta property="og:title" content="Manage | neuroDrive Senior Design Team">
+    <meta property="og:description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+
+    <style>
+        .background-tint {
+            background-color: rgba(0, 0, 0, .5);
+            background-blend-mode: multiply;
+        }
+
+        .header {
+            margin-bottom: 0px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+
+            <div class="navbar-left">
+                <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
+                <a class="navbar-brand" href="/">
+                    <span class="text-white">neuro<strong>Drive</strong></span>
+
+                </a>
+            </div>
+
+            <section class="navbar-mobile">
+                <nav class="nav nav-navbar ml-auto">
+
+                    <a class="nav-link" href="manage.html">Manage Entries</a>
+
+                    <a class="nav-link" href="entry.html">Add Entry</a>
+
+                </nav>
+
+                <span class="navbar-divider"></span>
+
+                <div>
+                    <a class="btn btn-sm btn-round btn-danger ml-lg-4 mr-2 text-white" onclick="logout()">Log out</a>
+                </div>
+            </section>
+
+        </div>
+    </nav><!-- /.navbar -->
+
+    <!-- Header -->
+    <header class="header pb-9 pt-10 mb-9 background-tint"
+        style="background-image: url(../assets/img/raspberrypi4.jpg)">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 id="name" class="fw-200 mb-6 text-white">Manage Your Entries Here</h1>
+                    <button type="button" class="btn btn-label btn-success">
+                        <label><i class="fa fa-plus"></i></label> Add Entry
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header><!-- /.header -->
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="section bg-gray p-0">
+            <div class="container">
+                <div class="row">
+                    <div id="content" class="col-md-10 col-xl-9 mx-auto">
+                        <!-- content will go here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
+            authDomain: "neurodrive-senior.firebaseapp.com",
+            databaseURL: "https://neurodrive-senior.firebaseio.com",
+            projectId: "neurodrive-senior",
+            storageBucket: "neurodrive-senior.appspot.com",
+            messagingSenderId: "627396498743",
+            appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
+            measurementId: "G-Q4PMGNR560"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var db = firebase.firestore();
+        var allUsers = {"vUvrs5pHvvTpB5JHligXJ4nO1uT2": "anthonysette", "tRcERq8PxSTEdwzOhV1cq1mNHao1": "justusmatteson", "XA778erOC5Tz8zTGuVKL3eP4NSt1": "kunalvohra", "clIwi6AJZSOQsx4yFbuJJtQEEc12": "walterhoffman"}
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                var uid = user.uid;
+                var user = allUsers[uid]
+
+                // load all posts from user
+                db.collection("posts").where("user", "==", user).orderBy('date', 'desc').get().then((querySnapshot) => { // 
+                    querySnapshot.forEach((doc) => {
+                        var data = doc.data()
+
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                        <div class="card hover-shadow-7 my-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="blog-single.html"><img class="fit-cover position-absolute h-100" src="${data["image"]}" alt="Wiki Image"></a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="p-7">
+                                        <h4>${data["title"]}</h4>
+                                        <p>${data["body"].substring(0, 100) + "..."}</p>
+                                        <button type="button" onclick="editEntry()" class="btn btn-label btn-primary">
+                                            <label><i class="fa fa-pencil"></i></label> Edit
+                                        </button>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <button type="button" onclick="deleteEntry('${doc.id}')" class="btn btn-label btn-danger">
+                                            <label><i class="fa fa-close"></i></label> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        document.getElementById('content').appendChild(div);
+                    });
+                });
+
+            } else {
+                // user is not logged in
+                window.location.replace("/admin.html");
+            }
+        });
+
+        function deleteEntry(id) {
+            var remove = confirm("Are you sure you want to delete this entry? Once this entry is deleted it can no longer be retrieved.");
+            if (remove == true){
+                db.collection("posts").doc(id).delete().then(function() {
+                    console.log("Document successfully deleted!");
+                    location.reload();
+                }).catch(function(error) {
+                    console.error("Error removing document: ", error);
+                });
+            } else {
+                console.log("User indicated they did not intend to delete the entry")
+            }
+        }
+
+
+        function editEntry() {
+            alert("I haven't implemented this feature, just copy the text, delete, and start over.");
+        }
+
+
+    </script>
+
+</body>
+
+</html>

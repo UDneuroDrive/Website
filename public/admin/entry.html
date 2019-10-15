@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+    <meta name="keywords"
+        content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
+
+    <title>Manage | neuroDrive Senior Design Team</title>
+
+    <!-- Styles -->
+    <link href="../assets/css/page.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+    <link rel="icon" href="../assets/img/favicon.png">
+
+    <!--  Open Graph Tags -->
+    <meta property="og:title" content="Manage | neuroDrive Senior Design Team">
+    <meta property="og:description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+
+    <link rel="stylesheet" href="../assets/css/dropzone.css">
+
+    <style>
+        .background-tint {
+            background-color: rgba(0, 0, 0, .5);
+            background-blend-mode: multiply;
+        }
+
+        .header {
+            margin-bottom: 0px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+
+            <div class="navbar-left">
+                <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
+                <a class="navbar-brand" href="/">
+                    <span class="text-white">neuro<strong>Drive</strong></span>
+
+                </a>
+            </div>
+
+            <section class="navbar-mobile">
+                <nav class="nav nav-navbar ml-auto">
+
+                    <a class="nav-link" href="manage.html">Manage Entries</a>
+
+                    <a class="nav-link" href="entry.html">Add Entry</a>
+
+                </nav>
+
+                <span class="navbar-divider"></span>
+
+                <div>
+                    <a class="btn btn-sm btn-round btn-danger ml-lg-4 mr-2 text-white" onclick="logout()">Log out</a>
+                </div>
+            </section>
+
+        </div>
+    </nav><!-- /.navbar -->
+
+    <!-- Header -->
+    <header class="header pb-9 pt-10 mb-9 background-tint"
+        style="background-image: url(../assets/img/raspberrypi4.jpg)">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 id="name" class="fw-200 mb-6 text-white">Add Entry</h1>
+                </div>
+            </div>
+        </div>
+    </header><!-- /.header -->
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="section bg-gray p-0">
+            <div class="container">
+                <div class="row">
+                    <div id="content" class="col-md-10 col-xl-9 mx-auto">
+                        <div id="dropzone">
+                            <form style="margin-top: 40px; margin-bottom: 20px;" action="/upload" class="dropzone needsclick dz-clickable" id="demo-upload">
+
+                                <div class="dz-message needsclick">
+                                    Drop Image or Video here or click to upload.<br>
+                                </div>
+
+                            </form>
+
+                            <form style="padding-bottom: 60px" action="#" method="POST">
+
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-12">
+                                        <input class="form-control" type="text" placeholder="Title">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea class="form-control" placeholder="Body" rows="4"></textarea>
+                                </div>
+
+                                <button class="btn btn-primary btn-block" type="submit">Post your entry</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
+
+    <script src="../assets/js/dropzone.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
+            authDomain: "neurodrive-senior.firebaseapp.com",
+            databaseURL: "https://neurodrive-senior.firebaseio.com",
+            projectId: "neurodrive-senior",
+            storageBucket: "neurodrive-senior.appspot.com",
+            messagingSenderId: "627396498743",
+            appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
+            measurementId: "G-Q4PMGNR560"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var storage = firebase.storage();
+        var db = firebase.firestore();
+
+        var allUsers = {"vUvrs5pHvvTpB5JHligXJ4nO1uT2": "anthonysette", "tRcERq8PxSTEdwzOhV1cq1mNHao1": "justusmatteson", "XA778erOC5Tz8zTGuVKL3eP4NSt1": "kunalvohra", "clIwi6AJZSOQsx4yFbuJJtQEEc12": "walterhoffman"}
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                var uid = user.uid;
+                // do sth that requires uid
+
+            } else {
+                // user is not logged in
+                window.location.replace("/admin.html");
+            }
+        });
+
+        function logout() {
+            firebase.auth().signOut().then(function() {
+                window.location.replace("/admin.html");
+            }).catch(function(error) {
+                console.log("An error occured")
+            });
+        }
+
+
+    </script>
+
+</body>
+
+</html>
