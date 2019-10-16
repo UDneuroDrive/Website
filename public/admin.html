@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
-    <meta name="keywords" content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
+    <meta name="description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+    <meta name="keywords"
+        content="Machine Learning, Computer Vision, Raspberry Pi, Autonomus Vehicle, Autonomous RC Vehicle, RC Vehicle">
 
-    <title>Wikis | neuroDrive Senior Design Team</title>
+    <title>Admin | neuroDrive Senior Design Team</title>
 
     <!-- Styles -->
     <link href="assets/css/page.min.css" rel="stylesheet">
@@ -24,11 +27,12 @@
     <meta name="theme-color" content="#ffffff">
 
     <!--  Open Graph Tags -->
-    <meta property="og:title" content="Wikis | neuroDrive Senior Design Team">
-    <meta property="og:description" content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
-  </head>
+    <meta property="og:title" content="Admin | neuroDrive Senior Design Team">
+    <meta property="og:description"
+        content="neuroDrive is a team of students working towards creating a small scale autonomous vehicle that learns to navigate with intention.">
+</head>
 
-  <body>
+<body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
@@ -77,117 +81,113 @@
 
     <body class="layout-centered" style="background-color: grey">
 
+        <!-- Main Content -->
+        <main class="main-content">
 
+            <div class="bg-white rounded shadow-7 w-400 mw-100 p-6">
+                <h5 class="mb-7">Log into your account</h5>
 
-    <!-- Main Content -->
-    <main class="main-content">
+                <form onsubmit="return login()">
+                    <div class="form-group">
+                        <input id="email" type="email" class="form-control" name="email" placeholder="Email">
+                    </div>
 
-      <div class="bg-white rounded shadow-7 w-400 mw-100 p-6">
-        <h5 class="mb-7">Log into your account</h5>
+                    <div class="form-group">
+                        <input id="password" type="password" class="form-control" name="password"
+                            placeholder="Password">
+                    </div>
 
-        <form onsubmit="return login()">
-          <div class="form-group">
-            <input id="email" type="email" class="form-control" name="email" placeholder="Email">
-          </div>
-
-          <div class="form-group">
-            <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-          </div>
-
-          <!-- <div class="form-group flexbox py-3">
+                    <!-- <div class="form-group flexbox py-3">
 
             <a class="text-muted small-2" href="user-recover.html">Forgot password?</a>
           </div> -->
 
-          <div class="form-group">
-            <button class="btn btn-block btn-primary" type="submit">Login</button>
-          </div>
-        </form>
+                    <div class="form-group">
+                        <button class="btn btn-block btn-primary" type="submit">Login</button>
+                    </div>
+                </form>
 
-        <!-- <div class="divider">Or Login With</div>
+                <!-- <div class="divider">Or Login With</div>
         <div class="text-center">
           <a class="btn btn-circle btn-sm btn-facebook mr-2" href="#"><i class="fa fa-facebook"></i></a>
           <a class="btn btn-circle btn-sm btn-google mr-2" href="#"><i class="fa fa-google"></i></a>
           <a class="btn btn-circle btn-sm btn-twitter" href="#"><i class="fa fa-twitter"></i></a>
         </div> -->
 
-        <!-- <hr class="w-30"> -->
-      </div>
+                <!-- <hr class="w-30"> -->
+            </div>
 
-    </main><!-- /.main-content -->
+        </main><!-- /.main-content -->
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container text-center">
-    
-            <p class="small">Copyright © <span id="year"></span> neuroDrive, All rights reserved.</p>
-    
-        </div>
-    </footer><!-- /.footer -->
-    <script>
-        var dt = new Date();
-        document.getElementById("year").innerHTML = dt.getYear() + 1900;
-    </script>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container text-center">
 
-    <!-- Scripts -->
-    <script src="assets/js/page.min.js"></script>
-    <script src="assets/js/script.js"></script>
+                <p class="small">Copyright © <span id="year"></span> neuroDrive, All rights reserved.</p>
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+            </div>
+        </footer><!-- /.footer -->
+        <script>
+            var dt = new Date();
+            document.getElementById("year").innerHTML = dt.getYear() + 1900;
+        </script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
+        <!-- Scripts -->
+        <script src="assets/js/page.min.js"></script>
+        <script src="assets/js/script.js"></script>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-auth.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-          apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
-          authDomain: "neurodrive-senior.firebaseapp.com",
-          databaseURL: "https://neurodrive-senior.firebaseio.com",
-          projectId: "neurodrive-senior",
-          storageBucket: "neurodrive-senior.appspot.com",
-          messagingSenderId: "627396498743",
-          appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
-          measurementId: "G-Q4PMGNR560"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyBortf5pyvTENtdsF4faBCf_3PQWPG_VCY",
+                authDomain: "neurodrive-senior.firebaseapp.com",
+                databaseURL: "https://neurodrive-senior.firebaseio.com",
+                projectId: "neurodrive-senior",
+                storageBucket: "neurodrive-senior.appspot.com",
+                messagingSenderId: "627396498743",
+                appId: "1:627396498743:web:cd7d1f037f8367ad1eb6b2",
+                measurementId: "G-Q4PMGNR560"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
 
-      // check if user is logged in
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          window.location.replace("admin/manage.html");
-        }
-      });
+            // check if user is logged in
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    window.location.replace("/admin/manage.html");
+                }
+            });
 
-      // log user in
-      function login() {
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
+            // log user in
+            function login() {
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
 
-        firebase.auth().signInWithEmailAndPassword(email, password).then( function() {
-          window.location.replace("admin/manage.html");
-        }).catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(errorMessage)
-        });
+                firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
+                    window.location.replace("admin/manage.html");
+                }).catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    alert(errorMessage)
+                });
 
-        return false;
-      }
+                return false;
+            }
 
 
 
-    </script>
+        </script>
 
-    <!-- Scripts -->
-    <script src="assets/js/page.min.js"></script>
-    <script src="assets/js/script.js"></script>
+    </body>
 
-  </body>
 </html>
