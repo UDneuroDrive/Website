@@ -1,0 +1,73 @@
+<script>
+    function editEntry(e) {
+        document.getElementById('submit').disabled = true;
+        var id = urlParams.get('id')
+        var user = firebase.auth().currentUser;
+        if (user) {
+            var uid = user.uid;
+            var username = allUsers[uid]
+
+            var title = document.getElementById("title").value;
+            var body = document.getElementById("body").value;
+
+            if (title == "" || body == "") {
+                alert("There must be a title and a body for your entry.")
+                document.getElementById('submit').disabled = false;
+                return false;
+            }
+
+            if (selectedFile != null) {
+                const uploadTask = storageRef.child(`images/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
+                uploadTask.on('state_changed', (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                }, (error) => {
+                    // Handle unsuccessful uploads
+                    document.getElementById('submit').disabled = false;
+                    alert("Error adding new files: ", error);
+                }, () => {
+                    // Do something once upload is complete
+
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                        console.log('File available at', downloadURL);
+
+                        // The file was successfully updated so we can now post data
+                        // Add a new document with a generated id.
+                        db.collection("posts").doc(id).update({
+                            title: title,
+                            body: body,
+                            image: downloadURL,
+                            video: null,
+
+                        })
+                            .then(function () {
+                                window.location.replace("manage.html");
+                                console.log("Document saved with ID: ", docRef.id);
+                            })
+                            .catch(function (error) {
+                                alert("Error saving document: ", error);
+                            });
+
+                    });
+                    console.log('success');
+                });
+            } else { //update doc not file
+                // Update doc
+                db.collection("posts").doc(id).update({
+                    title: title,
+                    body: body,
+
+                })
+                .then(function () {
+                    window.location.replace("manage.html");
+                    console.log("Document saved with ID: ", docRef.id);
+                })
+                .catch(function (error) {
+                    alert("Error saving document: ", error);
+                });
+            }
+        } else {
+            window.location.replace("/admin.html");
+        }
+        return false;
+    }
+</script>
