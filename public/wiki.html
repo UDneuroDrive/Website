@@ -195,7 +195,7 @@
                         </div>
                     </section>
                 `;
-                } else {
+                } else if (data["image"] != null){
                     div.innerHTML = `
                     <section class="section overflow-hidden">
                         <div class="container">
@@ -208,6 +208,32 @@
 
                                 <div class="col-md-6 mx-auto text-center mt-8 mt-md-0">
                                     <img src="${data["image"]}" alt="Update Image">
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                `;
+                } else if (data["video"] != null){
+                    div.innerHTML = `
+                    <section class="section overflow-hidden">
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="col-md-6 align-self-center text-center text-md-left">
+                                    <h2>${data["title"]}</h2><br>
+                                    <p>${data["body"]}</p>
+                                </div>
+
+                                <div class="col-md-6 mx-auto text-center mt-8 mt-md-0">
+                                    <div class="video-wrapper rounded-lg">
+                                        <div class="poster" style="background-image: url()">
+                                        </div>
+                                        <button class="btn btn-circle btn-lg btn-danger"><i class="fa fa-play"></i></button>
+                                        <div id="video">
+                                            <video src="${data["video"]}" poster="" controls></video>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>

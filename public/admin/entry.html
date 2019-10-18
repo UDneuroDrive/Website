@@ -99,16 +99,25 @@
                 <div class="row">
                     <div style="margin-bottom: 60px" id="content" class="col-md-10 col-xl-9 mx-auto">
 
-                        <form style="margin-bottom: 60px" onsubmit="return entryController(event)">
-
-                            <div id="image" style="margin-top: 40px; margin-bottom: 20px;">
-
+                        <div class="row" style="margin-top: 40px; margin-bottom: 20px;">
+                            <div class="col-md-8 mx-auto">
+                                <div id="image"></div>
+                                <div class="video-wrapper rounded-lg">
+                                    <div class="poster" style="background-image: url()">
+                                    </div>
+                                    <button class="btn btn-circle btn-lg btn-danger"><i class="fa fa-play"></i></button>
+                                    <div id="video"></div>
+                                </div>
                             </div>
+                        </div>
+
+                        <form style="margin-bottom: 60px" onsubmit="return entryController(event)">
 
                             <div style="margin-top: 20px; margin-bottom: 20px;" class="row">
                                 <div class="form-group col-12 col-md-12">
                                     <input style="display: none" type="file" id="uploadImage" class="file-select"
-                                        onchange="handleFileUploadChange(event)" accept="image/*" />
+                                        onchange="handleFileUploadChange(event)"
+                                        accept=".gif, .jpg, .jpeg, .png, .mp4" />
                                     <button onclick="document.getElementById('uploadImage').click();" type="button"
                                         class="btn btn-label btn-primary">
                                         <label><i class="fa fa-upload"></i></label> Upload
@@ -197,6 +206,9 @@
                 if (doc.data()["image"] != null) {
                     document.getElementById("image").innerHTML = `<img id="currentImage" src="${doc.data()["image"]}" alt="Current Image">`
                 }
+                if (doc.data()["video"] != null) {
+                    document.getElementById("video").innerHTML = `<video src="${doc.data()["video"]}" poster="" controls></video>`;
+                }
             }).catch(function (error) {
                 console.log("Error getting document:", error);
             });
@@ -221,11 +233,19 @@
         function handleFileUploadChange(e) {
             selectedFile = e.target.files[0];
 
+            console.log();
+
             var oFReader = new FileReader();
             oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
 
             oFReader.onload = function (oFREvent) {
-                document.getElementById("image").innerHTML = `<img id="currentImage" src="${oFREvent.target.result}" alt="Current Image">`
+                if (selectedFile.type.split("/").pop() == "mp4") {
+                    document.getElementById("video").innerHTML = `<video src="${oFREvent.target.result}" poster="" controls></video>`;
+                    document.getElementById("image").innerHTML = ``;
+                } else {
+                    document.getElementById("image").innerHTML = `<img id="currentImage" src="${oFREvent.target.result}" alt="Current Image">`
+                    document.getElementById("video").innerHTML = ``;
+                }
             };
         }
 
@@ -235,7 +255,7 @@
         }
 
         function entryController(e) {
-            if(urlParams.has("id")){
+            if (urlParams.has("id")) {
                 editEntry(e);
             } else {
                 addEntry(e);
@@ -243,7 +263,7 @@
             return false
         }
 
-        function editEntry(e){
+        function editEntry(e) {
             document.getElementById('submit').disabled = true;
             var id = urlParams.get('id')
             var user = firebase.auth().currentUser;
@@ -261,7 +281,7 @@
                 }
 
                 if (selectedFile != null) {
-                    const uploadTask = storageRef.child(`images/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
+                    const uploadTask = storageRef.child(`media/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
                     uploadTask.on('state_changed', (snapshot) => {
                         // Observe state change events such as progress, pause, and resume
                     }, (error) => {
@@ -274,22 +294,31 @@
                         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                             console.log('File available at', downloadURL);
 
+                            //check to see if it is a video
+                            if (selectedFile.type.split("/").pop() == "mp4") {
+                                var imageURL = null;
+                                var videoURL = downloadURL;
+                            } else {
+                                var imageURL = downloadURL;
+                                var videoURL = null;
+                            }
+
                             // The file was successfully updated so we can now post data
                             // Add a new document with a generated id.
                             db.collection("posts").doc(id).update({
                                 title: title,
                                 body: body,
-                                image: downloadURL,
-                                video: null,
+                                image: imageURL,
+                                video: videoURL,
 
                             })
-                            .then(function() {
-                                window.location.replace("manage.html");
-                                console.log("Document saved with ID: ", id);
-                            })
-                            .catch(function(error) {
-                                alert("Error saving document: ", error);
-                            });
+                                .then(function () {
+                                    window.location.replace("manage.html");
+                                    console.log("Document saved with ID: ", id);
+                                })
+                                .catch(function (error) {
+                                    alert("Error saving document: ", error);
+                                });
 
                         });
                         console.log('success');
@@ -301,14 +330,14 @@
                         body: body,
 
                     })
-                    .then(function() {
-                        console.log("Document saved with ID: ", id);
-                        window.location.replace("manage.html");
-                    })
-                    .catch(function(error) {
-                        console.error(error)
-                        alert("Error saving document: ", error);
-                    });
+                        .then(function () {
+                            console.log("Document saved with ID: ", id);
+                            window.location.replace("manage.html");
+                        })
+                        .catch(function (error) {
+                            console.error(error)
+                            alert("Error saving document: ", error);
+                        });
                 }
             } else {
                 window.location.replace("/admin.html");
@@ -333,7 +362,7 @@
                 }
 
                 if (selectedFile != null) {
-                    const uploadTask = storageRef.child(`images/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
+                    const uploadTask = storageRef.child(`media/${getRandomString()}`).put(selectedFile); //create a child directory called images, and place the file inside this directory
                     uploadTask.on('state_changed', (snapshot) => {
                         // Observe state change events such as progress, pause, and resume
                     }, (error) => {
@@ -346,13 +375,22 @@
                         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                             console.log('File available at', downloadURL);
 
+                            //check to see if it is a video
+                            if (selectedFile.type.split("/").pop() == "mp4") {
+                                var imageURL = null;
+                                var videoURL = downloadURL;
+                            } else {
+                                var imageURL = downloadURL;
+                                var videoURL = null;
+                            }
+
                             // The file was successfully updated so we can now post data
                             // Add a new document with a generated id.
                             db.collection("posts").add({
                                 title: title,
                                 body: body,
-                                image: downloadURL,
-                                video: null,
+                                image: imageURL,
+                                video: videoURL,
                                 user: username,
                                 date: firebase.firestore.FieldValue.serverTimestamp()
 
